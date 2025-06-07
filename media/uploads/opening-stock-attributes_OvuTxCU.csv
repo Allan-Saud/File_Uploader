@@ -1,0 +1,16 @@
+"column_name","data_type","is_nullable","column_default"
+"is_deleted","boolean","NO",NULL
+"id","bigint","NO",NULL
+"opening_date","date","YES",NULL
+"main_qty","integer","YES",NULL
+"transit_qty","integer","YES",NULL
+"total_qty","integer","YES",NULL
+"created_at","timestamp with time zone","YES",NULL
+"updated_at","timestamp with time zone","YES",NULL
+"last_sync_date","timestamp with time zone","YES",NULL
+"is_active","boolean","YES",NULL
+"area_id","bigint","YES",NULL
+"created_by_id","integer","YES",NULL
+"product_id","bigint","YES",NULL
+"updated_by_id","integer","YES",NULL
+"ref_no","character varying","YES",NULL
