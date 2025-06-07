@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Upload Files</title>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+</head>
+<body class="p-4">
+    <h2>Upload PDF, Excel, CSV, or DB File</h2>
+
+    <!-- File type dropdown for UI filtering (not submitted) -->
+    <div class="mb-3">
+        <label for="file_type_select" class="form-label">Select File Type</label>
+        <select id="file_type_select" class="form-select">
+            <option value="">-- Choose File Type --</option>
+            <option value="pdf">PDF</option>
+            <option value="excel">Excel</option>
+            <option value="csv">CSV</option>
+            <option value="db">Database</option>
+        </select>
+    </div>
+
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-primary">Upload</button>
+    </form>
+
+    <hr>
+
+    {% if uploaded_info %}
+        {% if uploaded_info.type == 'pdf' %}
+            <h3>PDF Preview</h3>
+            <a href="{{ uploaded_info.path }}" target="_blank">View PDF</a>
+
+        {% elif uploaded_info.type == 'excel' or uploaded_info.type == 'csv' %}
+            <h3>{{ uploaded_info.type|title }} Data</h3>
+            {{ uploaded_info.data|safe }}
+        {% elif uploaded_info.type == 'db' %}
+            <h3>Database Tables</h3>
+            {% for table, html in uploaded_info.data.items %}
+                <h4>{{ table }}</h4>
+                {{ html|safe }}
+            {% endfor %}
+        {% else %}
+            <p class="text-danger">Unsupported file type.</p>
+        {% endif %}
+    {% endif %}
+
+    <script>
+        const fileTypeSelect = document.getElementById('file_type_select');
+        const fileInput = document.getElementById('id_file');
+
+        fileTypeSelect.addEventListener('change', function () {
+            const selected = this.value;
+            if (selected === 'pdf') {
+                fileInput.accept = '.pdf';
+            } else if (selected === 'excel') {
+                fileInput.accept = '.xlsx,.xls';
+            } else if (selected === 'csv') {
+                fileInput.accept = '.csv';
+            } else if (selected === 'db') {
+                fileInput.accept = '.db';
+            } else {
+                fileInput.accept = '*/*';
+            }
+        });
+
+    </script>
+</body>
+</html>
